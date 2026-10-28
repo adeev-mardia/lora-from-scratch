@@ -1,1 +1,1 @@
-`python -m`
+python -m foo
