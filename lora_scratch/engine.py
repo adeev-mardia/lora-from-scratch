@@ -93,9 +93,6 @@ def build_lora_model(base_model: TextClassifier, num_classes: int, r: int, alpha
     for module, attr in base_model.lora_target_modules():
         apply_lora(module, [attr], r=r, alpha=alpha)
     base_model.set_backbone_trainable(False)
-    # set_backbone_trainable already froze the raw weights/biases inside
-    # LoRALinear too (they were created with requires_grad=False anyway),
-    # but lora_A / lora_B must stay trainable -- re-enable them explicitly.
     for module, attr in base_model.lora_target_modules():
         lora_layer = getattr(module, attr)
         lora_layer.lora_A.requires_grad_(True)
